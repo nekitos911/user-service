@@ -80,6 +80,27 @@ class UserControllerTest {
     }
 
     @Test
+    void createUser_error_SameEmail() throws Exception {
+        UserDto user = TestDataFactory.createUser();
+        String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(post(API)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson)
+                        .header(Constants.X_SOURCE_HEADER, Source.MAIL)
+                )
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post(API)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson)
+                        .header(Constants.X_SOURCE_HEADER, Source.MAIL)
+                )
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.error.description.errorCode").value(ErrorCode.GENERAL_ERROR.name()));
+    }
+
+    @Test
     void createUser_notValidPassport() throws Exception {
         UserDto user = TestDataFactory.createUser();
         user.setPassportNumber("123");
@@ -115,6 +136,7 @@ class UserControllerTest {
     @Test
     void findUser_success() throws Exception {
         UserDto user = TestDataFactory.createUser();
+        userRepository.save(userMapper.convert(user));
 
         UserSearchRequestDto userSearchRequestDto = TestDataFactory.createUserSearchRequestDto(user);
         String searchRequest = objectMapper.writeValueAsString(userSearchRequestDto);

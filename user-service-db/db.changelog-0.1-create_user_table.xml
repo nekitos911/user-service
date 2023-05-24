@@ -24,14 +24,14 @@
             <column name="birth_place" type="varchar">
             </column>
             <column name="email" type="varchar">
+                <constraints unique="true"/>
             </column>
             <column name="phone" type="varchar">
+                <constraints unique="true"/>
             </column>
             <column name="registration_address" type="varchar">
             </column>
             <column name="residential_address" type="varchar">
-            </column>
-            <column name="source" type="varchar">
             </column>
         </createTable>
     </changeSet>

@@ -24,7 +24,9 @@ public class UserEntity {
     private LocalDate birthDate;
     private String passportNumber;
     private String birthPlace;
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String phone;
     private String registrationAddress;
     private String residentialAddress;
