@@ -1,0 +1,38 @@
+services:
+  app:
+    image: 'user-service:latest'
+    build:
+      context: .
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - SERVER_NAME=${SERVER_NAME}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+    expose:
+      - ${SERVER_PORT}
+    ports:
+      - ${SERVER_PORT}:8080
+    networks:
+      - mynet
+
+  db:
+    image: 'postgres:latest'
+    container_name: db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - ${DATABASE_PORT}:5432
+    expose:
+      - ${DATABASE_PORT}
+    networks:
+      - mynet
+
+networks:
+  mynet:
+    driver: bridge

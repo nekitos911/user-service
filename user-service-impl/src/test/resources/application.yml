@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    properties.hibernate.temp.user_jdbc_metadata_defaults: false
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  liquibase:
+    enabled: false
